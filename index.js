@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 4001;
+const verifyToken = require("./authenticator.js");
 
 // routes
 const shop = require("./routes/shop");
@@ -27,10 +28,10 @@ app.get("/test", (req, res, next) => {
   res.send("Server is up and running");
 });
 
-// redirect based on path match
+// All routes go thru verification except auth
 app.use("/auth", auth);
+app.use(verifyToken);
 app.use("/api", shop);
-
 /**
  * 404 middlware
  */
@@ -40,5 +41,5 @@ app.use((req, res, next) => {
 
 // Start server
 app.listen(port, () => {
-    console.log(`Burrito-shop app listening on port ${port}`);
+  console.log(`Burrito-shop app listening on port ${port}`);
 });

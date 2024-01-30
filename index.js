@@ -4,6 +4,10 @@ const app = express();
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 4001;
 
+// routes
+const shop = require("./routes/shop");
+const auth = require("./routes/auth");
+
 // Logger for all the api calls
 app.use((req, res, next) => {
   const now = new Date();
@@ -22,6 +26,10 @@ app.get("/", (req, res) => {
 app.get("/test", (req, res, next) => {
   res.send("Server is up and running");
 });
+
+// redirect based on path match
+app.use("/auth", auth);
+app.use("/api", shop);
 
 /**
  * 404 middlware

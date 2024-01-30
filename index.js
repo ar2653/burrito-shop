@@ -28,16 +28,10 @@ app.get("/test", (req, res, next) => {
   res.send("Server is up and running");
 });
 
-// All routes go thru verification except auth
+// All routes go thru verification except "auth"
 app.use("/auth", auth);
 app.use(verifyToken);
 app.use("/api", shop);
-/**
- * 404 middlware
- */
-app.use((req, res, next) => {
-  res.status(404).send("Sorry can't find that!");
-});
 
 // Start server
 app.listen(port, () => {

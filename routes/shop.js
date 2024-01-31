@@ -1,62 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const sql = require("../db");
+const { emptyOrder, subtotalCalculator, generateInsertQuery, reduceIndividualOrders } = require("../utils/helper");
 
-const abcFinal = async (orderData) => {
-  const order_id = await emptyOrderFunction(); // returns order id
-  const individualOrders = await subtotalCalculator(order_id, orderData);
-  const insertQuery = await generateInsertQuery(individualOrders);
-  // insert sql step
-  // calculate total price and update order table
-  // return order object with totals
-};
-
-router.post('/createOrder', (req, res) => {
+router.post('/createOrder', async (req, res) => {
   try {
-    
+    const { order_data } = req.body;
+    const order_id = await emptyOrder(req);
+    const individualOrders = await subtotalCalculator(order_id, order_data);
+    const orderTotal = await reduceIndividualOrders(individualOrders);
+    const insertQuery = await generateInsertQuery(order_id, individualOrders);
+    const [order_details_data, _] = await sql.promise().query(insertQuery.query, insertQuery.values);
+    const updateTotalPriceQuery = 'UPDATE orders SET total_amount = ? WHERE order_id = ?';
+    const [updateResult] = await sql.promise().query(updateTotalPriceQuery, [orderTotal, order_id]);
+    const orderConfirmed = await sql.promise().query(`SELECT * from orders where order_id = ${order_id}`);
+    console.log('Update Result:', updateResult, orderConfirmed);
+    res.status(200).json({message: "Order confirmed"});
   } catch (error) {
-    
+    console.log(error);
   }
 })
-// Create an empty order
-// router.post("/emptyOrder", async (req, res) => {
-//   try {
-//     const { user_id } = req.user,
-//       order_date = new Date();
-//     const [emptyOrder, _] = await sql
-//       .promise()
-//       .query("INSERT INTO orders (user_id, order_date) VALUES (?, ?)", [
-//         user_id,
-//         order_date,
-//       ]);
-//     const order_id = emptyOrder.insertId;
-//     res.status(201).json({ order_id });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Server Error" });
-//   }
-// });
-
-router.post("/order-detail", async (req, res) => {
-  try {
-  } catch (error) {}
-});
-
-// We need
-router.get("/", async (req, res) => {
-  res.status(200).json({ data: "shop", message: "shop page" });
-});
-
-// Get all toppings
-router.get("/toppings", async (req, res) => {
-  try {
-    const query = "SELECT * FROM toppings";
-    const [toppings, _] = await sql.promise().query(query);
-    res.status(200).json(toppings);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
-  }
-});
 
 module.exports = router;

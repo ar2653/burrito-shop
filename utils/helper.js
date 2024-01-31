@@ -1,6 +1,6 @@
 const sql = require("../db");
 
-const emptyOrder = async () => {
+const emptyOrder = async (req) => {
   try {
     const { user_id } = req.user;
     const order_date = new Date();
@@ -53,10 +53,17 @@ const subtotalCalculator = async (order_id, data) => {
   });
 };
 
+// total sum
+const reduceIndividualOrders = (orderDetails) => {
+    return orderDetails.reduce((totalSum, orderDetail) => {
+      return totalSum + orderDetail.subtotal;
+    }, 0);
+};
+
 // Insert each item into order detail
 const generateInsertQuery = (order_id, data) => {
-  const valuesPlaceholder = data.map(() => "(?, ?, ?)").join(", ");
-  const query = `INSERT INTO order_details (order_id, product_id, quantity, subtotal) VALUES ${valuesPlaceholder}`;
+  const valuesPlaceholder = data.map(() => "(?, ?, ?, ?)").join(", ");
+  const query = `INSERT INTO order_details (order_id, product_id, quantity, subtotal_price) VALUES ${valuesPlaceholder}`;
   const values = data.flatMap((orderDetail) => [
     order_id,
     orderDetail.product_id,
@@ -66,4 +73,4 @@ const generateInsertQuery = (order_id, data) => {
   return { query, values };
 };
 
-module.exports = { subtotalCalculator, generateInsertQuery };
+module.exports = { emptyOrder, subtotalCalculator, reduceIndividualOrders, generateInsertQuery };

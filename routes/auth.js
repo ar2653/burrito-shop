@@ -47,6 +47,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
+// Login by a user
 router.get("/login", async (req, res) => {
   try {
     const { email_address, password } = req.body;
@@ -68,7 +69,7 @@ router.get("/login", async (req, res) => {
     }
     // If passwords match, generate a JWT token
     const token = jwt.sign(
-      { user_id: user.id, email: user.email_address },
+      { user_id: user.user_id, email: user.email_address },
       process.env.JWT_SECRET_KEY,
       {
         expiresIn: "1h",

@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const port = process.env.PORT || 4001;
-const verifyToken = require("./authenticator.js");
+const verifyToken = require("./utils/authenticator.js");
 
 // routes
 const shop = require("./routes/shop");

@@ -2,13 +2,11 @@ const sql = require("../db");
 const queries = require("./queries");
 
 /**
- * Creates an empty order for a user.
+ * Create an empty order for a user.
  *
- * @async
- * @param {Object} req - The request object containing user information.
- * @param {number} req.user.user_id - The user ID.
- * @returns {Promise<number>} The order ID of the newly created empty order.
- * @throws {Error} Throws an error if the query execution fails.
+ * @param {Object} req - Express request object.
+ * @returns {Promise<number>} - Promise resolving to the order ID.
+ * @throws {Error} - Throws an error if the SQL query fails.
  */
 const emptyOrder = async (req) => {
   try {
@@ -16,10 +14,7 @@ const emptyOrder = async (req) => {
     const order_date = new Date();
     const [emptyOrder, _] = await sql
       .promise()
-      .query(queries.INSERT_ORDER, [
-        user_id,
-        order_date,
-      ]);
+      .query(queries.INSERT_ORDER, [user_id, order_date]);
     const orderId = emptyOrder.insertId;
     return orderId;
   } catch (error) {
@@ -29,14 +24,12 @@ const emptyOrder = async (req) => {
 };
 
 /**
- * Calculates subtotal for each order detail based on the data.
+ * Calculate subtotals for individual order details.
  *
- * @async
- * @function
- * @param {number} orderId - The ID of the empty order.
- * @param {Array} data - An array of order details from request body.
- * @returns {Promise<Array>} An array of objects containing order details with subtotals.
- * @throws {Error} Throws an error if there is an issue with the SQL queries or data processing.
+ * @param {number} orderId - The ID of the order.
+ * @param {Object} req - Express request object.
+ * @returns {Array<Object>} - Array of objects representing order details with subtotals.
+ * @throws {Error} - Throws an error if the SQL queries fail.
  */
 const subtotalCalculator = async (orderId, req) => {
   const data = req.body.orderData;
@@ -77,26 +70,18 @@ const subtotalCalculator = async (orderId, req) => {
 };
 
 /**
- * Reduces an array of order details to calculate the total sum of subtotals.
- *
- * @function
- * @param {Array} orderDetails - An array of order details with subtotals.
- * @returns {number} The total sum of subtotals.
+ * Calculate total sum of subtotals in order details.
+ * @param {Object[]} orderDetails - Array of objects representing order details.
+ * @returns {number} - Total sum of subtotals.
  */
-const reduceIndividualOrders = (orderDetails) => {
-  return orderDetails.reduce((totalSum, orderDetail) => {
-    return totalSum + orderDetail.subtotal;
-  }, 0);
-};
+const reduceIndividualOrders = (orderDetails) =>
+  orderDetails.reduce((total, { subtotal }) => total + subtotal, 0);
 
 /**
- * Generates Query and values for inserting multiple order details into the order_details table.
- *
- * @function
- * @param {number} orderId - The order id to associate with the inserted order details.
- * @param {Array} data - An array of order details containing product_id, quantity, and subtotal.
- * @returns {Object} An object containing the SQL query and values for insertion.
- * @throws {Error} Throws an error if the provided data is not valid.
+ * Build a bulk insert query for order details.
+ * @param {number} orderId - Order ID.
+ * @param {Object[]} data - Array of objects representing order details.
+ * @returns {Object} - Query object with 'query' and 'values' properties.
  */
 const buildBulkInsertQuery = (orderId, data) => {
   const valuesPlaceholder = data.map(() => "(?, ?, ?, ?)").join(", ");

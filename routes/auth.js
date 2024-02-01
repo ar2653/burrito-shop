@@ -6,7 +6,11 @@ const bcrypt = require("bcrypt");
 const sql = require("../db");
 const queries = require("../utils/queries");
 
-// Register a user
+/**
+ * Register a new user.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 router.post("/register", async (req, res) => {
   try {
     const { first_name, last_name, email_address, password } = req.body;
@@ -48,7 +52,11 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login by a user
+/**
+ * Login a user.
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ */
 router.get("/login", async (req, res) => {
   try {
     const { email_address, password } = req.body;

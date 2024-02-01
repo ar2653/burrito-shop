@@ -12,7 +12,9 @@ const queries = require('../utils/queries');
  */
 router.post('/order', async (req, res) => {
   try {
+    // console.log("ENTERED1", req);
     const orderId = await emptyOrder(req);
+    console.log("orderId", orderId);
     const individualOrders = await subtotalCalculator(orderId, req);
     const orderTotal = await reduceIndividualOrders(individualOrders);
     const bulkInsert = await buildBulkInsertQuery(orderId, individualOrders);

@@ -1,19 +1,12 @@
 const request = require("supertest");
 const app = require("../index");
-const {
-  newRegisteredUser,
-  existingUser,
-  validLoginUser,
-  invalidLoginUser,
-  unauthorizedUser,
-} = require("../__mocks__/mockusers");
-const sql = require("../db");
+const { newRegisteredUser, existingUser, validLoginUser, invalidLoginUser, unauthorizedUser } = require("../__mocks__/mockusers");
 
-describe("Authentication", () => {
+describe("Authentication Endpoints", () => {
   // Registration test suite
-  describe("Registration", () => {
+  describe("User Registration", () => {
     // A new user is being registered
-    test("Should register a new user", async () => {
+    test("Should successfully register a new user", async () => {
       const res = await request(app)
         .post("/auth/register")
         .send(newRegisteredUser)
@@ -31,7 +24,7 @@ describe("Authentication", () => {
   });
 
   // Login test suite
-  describe("Login", () => {
+  describe("User Login", () => {
     test("Should be able to login with valid credentials", async () => {
       const res = await request(app)
         .get("/auth/login")
@@ -57,5 +50,16 @@ describe("Authentication", () => {
         .expect(401);
       expect(res.body.message).toStrictEqual("Invalid credentials");
     });
+  });
+});
+
+describe("Index.js Endpoints", () => {
+  test("GET / endpoint", async () => {
+    const res = await request(app).get("/").expect(200);
+    expect(res.text).toBe("Burrito Shop");
+  });
+  test("GET /test Endpoint", async () => {
+    const res = await request(app).get("/test").expect(200);
+    expect(res.text).toBe("Server is up and running");
   });
 });

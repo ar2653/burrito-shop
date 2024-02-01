@@ -5,7 +5,7 @@ const queries = require("../utils/queries");
 jest.mock("../db");
 
 describe("Helper Functions", () => {
-  describe("Helper Functions", () => {
+  describe("Order Helper Functions", () => {
     test("Should reduce the subtotals and return the sum", () => {
       const orderDetails = [
         { subtotal: 10 },
@@ -15,7 +15,7 @@ describe("Helper Functions", () => {
       const result = helper.reduceIndividualOrders(orderDetails);
       expect(result).toBe(60);
     })
-    test('should build a correct bulk insert query', () => {
+    test('Should build a correct bulk insert query', () => {
       const orderId = 123;
       const data = [
         { product_id: 1, quantity: 2, subtotal: 10 },

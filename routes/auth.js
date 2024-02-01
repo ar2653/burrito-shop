@@ -4,13 +4,14 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const sql = require("../db");
+const queries = require("../utils/queries");
 
 // Register a user
 router.post("/register", async (req, res) => {
   try {
     const { first_name, last_name, email_address, password } = req.body;
     // check if user exists in DB, if exists, throw error else continue
-    const checkUserQuery = "SELECT * FROM users WHERE email_address = ?";
+    const checkUserQuery = queries.SELECT_USER_BY_EMAIL;
     const [existingUsers, fields] = await sql
       .promise()
       .query(checkUserQuery, [email_address]);
@@ -20,7 +21,7 @@ router.post("/register", async (req, res) => {
     // Hash the password to store in DB
     try {
       const hash = await bcrypt.hash(password, 10);
-      const insertQuery = `INSERT INTO users (first_name, last_name, email_address, password_hash) VALUES (?, ?, ?, ?)`;
+      const insertQuery = queries.INSERT_USER;
       const insertValues = [first_name, last_name, email_address, hash];
       const [insertResults, _] = await sql
         .promise()
@@ -52,7 +53,7 @@ router.get("/login", async (req, res) => {
   try {
     const { email_address, password } = req.body;
     // Find the user from DB
-    const findUserQuery = "SELECT * FROM users WHERE email_address = ?";
+    const findUserQuery = queries.SELECT_USER_BY_EMAIL;
     const [users, fields] = await sql
       .promise()
       .query(findUserQuery, [email_address]);

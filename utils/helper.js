@@ -130,5 +130,5 @@ module.exports = {
   subtotalCalculator,
   reduceIndividualOrders,
   buildBulkInsertQuery,
-  updateToppingsData,
+  updateToppingsData
 };

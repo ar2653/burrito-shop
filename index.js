@@ -33,6 +33,11 @@ app.use("/auth", auth);
 app.use(verifyToken);
 app.use("/api", shop);
 
+// 404
+app.use((req, res) => {
+  res.status(404).json({message: "not found"});
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Burrito-shop app listening on port ${port}`);

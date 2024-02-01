@@ -95,9 +95,40 @@ const buildBulkInsertQuery = (orderId, data) => {
   return { query, values };
 };
 
+const updateToppingsData = async (req, orderId) => {
+  console.log(`${queries.SELECT_ORDER_DETAILS_BY_ORDER_ID}${orderId}`);
+  const combinations = [];
+  const [orderDetails, _] = await sql
+    .promise()
+    .query(`${queries.SELECT_ORDER_DETAILS_BY_ORDER_ID}`, [orderId]);
+  console.log(req.body.orderData, orderDetails);
+  for (const orderItem of req.body.orderData) {
+    const matchingDetailItems = orderDetails.filter(
+      (detail) => detail.product_id === orderItem.product_id
+    );
+    for (const detailItem of matchingDetailItems) {
+      for (const toppingId of orderItem.toppings) {
+        combinations.push({
+          id_from_details: detailItem.id,
+          topping_id: toppingId,
+        });
+      }
+    }
+  }
+  const valuesPlaceholder = combinations.map(() => "(?, ?)").join(", ");
+  const query = `INSERT INTO item_toppings (order_detail_id, topping_type_id) VALUES ${valuesPlaceholder}`;
+  const values = combinations.flatMap((combination) => [
+    combination.id_from_details,
+    combination.topping_id,
+  ]);
+  const updatedtopps = await sql.promise().query(query, values);
+  console.log(updatedtopps, "updatedtoppsupdatedtoppsupdatedtopps");
+};
+
 module.exports = {
   emptyOrder,
   subtotalCalculator,
   reduceIndividualOrders,
   buildBulkInsertQuery,
+  updateToppingsData,
 };

@@ -67,7 +67,7 @@ router.get("/login", async (req, res) => {
       .query(findUserQuery, [email_address]);
     // Check if the user exists
     if (users.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
     // If user exists, check password hash from db
     const user = users[0];
@@ -84,7 +84,7 @@ router.get("/login", async (req, res) => {
         expiresIn: "1h",
       }
     );
-    res.json({ token });
+    res.status(201).json({ token , message: "Token Generated"});
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
   }

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const jwt = require('jsonwebtoken');
 const supertest = require('supertest');
 const express = require('express');
@@ -15,11 +14,11 @@ app.get('/protected', (req, res) => {
 });
 
 // Mock environment variables
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+process.env.JWT_SECRET_KEY = 'secret';
 
 describe('verifyToken Middleware', () => {
   test('should allow access with a valid token', async () => {
-    const token = jwt.sign({ userId: 1 }, JWT_SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: 1 }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
     const response = await supertest(app)
       .get('/protected')
       .set('Authorization', token);

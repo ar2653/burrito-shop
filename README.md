@@ -145,5 +145,7 @@ New order creation successful
 ---
 ### Sample Test coverage results for Burrito-API
 
+Just the catch blocks in try...catch are leftout.
+
 <img width="797" alt="Screenshot 2024-02-01 at 11 29 02 PM" src="https://github.com/ar2653/burrito-shop/assets/144984108/7a226180-d828-4f2d-a711-eb788a11f43b">
 

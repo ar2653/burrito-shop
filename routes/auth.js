@@ -65,8 +65,6 @@ router.get("/login", async (req, res) => {
     const [users, fields] = await sql
       .promise()
       .query(findUserQuery, [email_address]);
-
-      console.log(users)
     // Check if the user exists
     if (users.length === 0) {
       return res.status(400).json({ message: "User not found" });

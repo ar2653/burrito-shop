@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === "test") {
 const sql = mysql.createPool({
   ...config,
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: 20,
   queueLimit: 0,
   connectTimeout: 20000, // 20 seconds
 });

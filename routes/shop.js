@@ -12,15 +12,13 @@ const queries = require('../utils/queries');
  */
 router.post('/order', async (req, res) => {
   try {
-    // console.log("ENTERED1", req);
     const orderId = await emptyOrder(req);
-    console.log("orderId", orderId);
     const individualOrders = await subtotalCalculator(orderId, req);
     const orderTotal = await reduceIndividualOrders(individualOrders);
     const bulkInsert = await buildBulkInsertQuery(orderId, individualOrders);
     await sql.promise().query(bulkInsert.query, bulkInsert.values);
     await sql.promise().query(queries.UPDATE_ORDER_PRICE, [orderTotal, orderId]);
-    const toppingsUpdate = await updateToppingsData(req, orderId);
+    await updateToppingsData(req, orderId);
     const [orderDetails] = await sql.promise().query(queries.GET_CONFIRMED_ORDER_DETAILS, [orderId]);
     res.status(200).json({ data: orderDetails, message: "Order confirmed" });
   } catch (error) {

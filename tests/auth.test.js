@@ -1,6 +1,13 @@
 const request = require("supertest");
 const app = require("../index");
-const { newRegisteredUser, existingUser, validLoginUser, invalidLoginUser, unauthorizedUser } = require("../__mocks__/mockusers");
+const http = require("http");
+const {
+  newRegisteredUser,
+  existingUser,
+  validLoginUser,
+  invalidLoginUser,
+  unauthorizedUser,
+} = require("../__mocks__/mockusers");
 
 describe("Authentication Endpoints", () => {
   // Registration test suite
@@ -51,15 +58,15 @@ describe("Authentication Endpoints", () => {
       expect(res.body.message).toStrictEqual("Invalid credentials");
     });
   });
-});
 
-describe("Index.js Endpoints", () => {
-  test("GET / endpoint", async () => {
-    const res = await request(app).get("/").expect(200);
-    expect(res.text).toBe("Burrito Shop");
-  });
-  test("GET /test Endpoint", async () => {
-    const res = await request(app).get("/test").expect(200);
-    expect(res.text).toBe("Server is up and running");
+  describe("Index.js Endpoints", () => {
+    test("GET / endpoint", async () => {
+      const res = await request(app).get("/").expect(200);
+      expect(res.text).toBe("Burrito Shop");
+    });
+    test("GET /test Endpoint", async () => {
+      const res = await request(app).get("/test").expect(200);
+      expect(res.text).toBe("Server is up and running");
+    });
   });
 });

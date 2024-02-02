@@ -1,6 +1,5 @@
 const request = require("supertest");
 const app = require("../index");
-const http = require("http");
 const {
   newRegisteredUser,
   existingUser,

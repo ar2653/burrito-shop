@@ -27,10 +27,16 @@ const unauthorizedUser = {
   password: "wrongpassword",
 };
 
+const userPayload = {
+  user_id: 1,
+  email_address: "johndoe@gmail.com"
+}
+
 module.exports = {
   newRegisteredUser,
   existingUser,
   validLoginUser,
   invalidLoginUser,
-  unauthorizedUser
+  unauthorizedUser,
+  userPayload
 }

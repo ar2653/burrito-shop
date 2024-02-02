@@ -1,6 +1,6 @@
 const queries = {
   UPDATE_ORDER_PRICE: "UPDATE orders SET total_amount = ? WHERE order_id = ?",
-  GET_CONFIRMED_ORDER_DETAILS: "SELECT * from ORDERS WHERE order_id = ?",
+  GET_CONFIRMED_ORDER_DETAILS: "SELECT * from orders WHERE order_id = ?",
   SELECT_USER_BY_EMAIL: "SELECT * FROM users WHERE email_address = ?",
   INSERT_USER:
     "INSERT INTO users (first_name, last_name, email_address, password_hash) VALUES (?, ?, ?, ?)",
@@ -12,7 +12,7 @@ const queries = {
   INSERT_ITEM_TOPPINGS:
     "INSERT INTO item_toppings (order_detail_id, topping_type_id) VALUES (?, ?)",
   SELECT_ORDER_DETAILS_BY_ORDER_ID:
-    "SELECT * FROM ORDER_DETAILS WHERE order_id = ?",
+    "SELECT * FROM order_details WHERE order_id = ?",
   GET_ORDER_DETAILS: `SELECT
     o.order_id,
     od.id,

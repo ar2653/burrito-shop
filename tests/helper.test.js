@@ -1,27 +1,16 @@
-const sql = require("../db");
 const helper = require("../utils/helper");
 const queries = require("../utils/queries");
-
-jest.mock("../db");
+const { subTotalArray, orderData} = require("../__mocks__/orderdata");
 
 describe("Helper Functions", () => {
   describe("Order Helper Functions", () => {
     test("Should reduce the subtotals and return the sum", () => {
-      const orderDetails = [
-        { subtotal: 10 },
-        { subtotal: 20 },
-        { subtotal: 30 },
-      ];
-      const result = helper.reduceIndividualOrders(orderDetails);
+      const result = helper.reduceIndividualOrders(subTotalArray);
       expect(result).toBe(60);
     })
     test('Should build a correct bulk insert query', () => {
       const orderId = 123;
-      const data = [
-        { product_id: 1, quantity: 2, subtotal: 10 },
-        { product_id: 2, quantity: 3, subtotal: 15 },
-      ];
-      const result = helper.buildBulkInsertQuery(orderId, data);
+      const result = helper.buildBulkInsertQuery(orderId, orderData);
       // Expected query string
       const expectedQuery = `${queries.INSERT_ORDER_DETAILS_BULK} (?, ?, ?, ?), (?, ?, ?, ?)`;
       expect(result.query).toBe(expectedQuery);
@@ -30,5 +19,4 @@ describe("Helper Functions", () => {
       expect(result.values).toEqual(expectedValues);
     });
   });
-
 });

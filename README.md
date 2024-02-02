@@ -145,7 +145,16 @@ New order creation successful
 ---
 ### Sample Test coverage results for Burrito-API
 
-Just the catch blocks in try...catch are leftout.
-
 <img width="797" alt="Screenshot 2024-02-01 at 11 29 02 PM" src="https://github.com/ar2653/burrito-shop/assets/144984108/7a226180-d828-4f2d-a711-eb788a11f43b">
 
+Just the catch blocks in try...catch are leftout.
+
+### Sample Docker containers
+
+<img width="1461" alt="Screenshot 2024-02-02 at 6 23 10 AM" src="https://github.com/ar2653/burrito-shop/assets/144984108/b91bfb82-727a-4a6d-b8f5-9cdef3d048d0">
+
+### The Node JS App and MySQL Database are published to docker hub as well.
+
+<img width="1013" alt="Screenshot 2024-02-02 at 6 25 51 AM" src="https://github.com/ar2653/burrito-shop/assets/144984108/e4203e72-3b6a-4af1-bdc5-998a8eb5c636">
+
+[Not Ready Yet]: There is some error when using these docker images. All the end points are not working as expected.

@@ -99,7 +99,7 @@ const updateToppingsData = async (req, orderId) => {
   const combinations = [];
   const [orderDetails, _] = await sql
     .promise()
-    .query(`${queries.SELECT_ORDER_DETAILS_BY_ORDER_ID}`, [orderId]);
+    .query('SELECT * FROM order_details WHERE order_id = ?', [orderId]);
   for (const orderItem of req.body.orderData) {
     const matchingDetailItems = orderDetails.filter(
       (detail) => detail.product_id === orderItem.product_id

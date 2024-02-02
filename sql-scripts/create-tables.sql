@@ -1,9 +1,7 @@
--- Create database if not exists
--- DROP DATABASE burritodb;
-CREATE DATABASE burritodb1;
-USE burritodb1;
+DROP DATABASE IF EXISTS burritodatabase;
+CREATE DATABASE burritodatabase;
+USE burritodatabase;
 
--- USERS
 CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
   first_name VARCHAR(50) NOT NULL,
@@ -12,7 +10,6 @@ CREATE TABLE users (
   password_hash VARCHAR(100) NOT NULL
 );
 
--- ORDERS
 CREATE TABLE orders (
   order_id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT,
@@ -21,7 +18,6 @@ CREATE TABLE orders (
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- PRODUCTS
 CREATE TABLE products (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255),
@@ -29,14 +25,12 @@ CREATE TABLE products (
   price DECIMAL(10, 2)
 );
 
--- TOPPINGS
 CREATE TABLE toppings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   item VARCHAR(255),
   price DECIMAL(10, 2)
 );
 
--- ORDER_DETAILS
 CREATE TABLE order_details (
   id INT AUTO_INCREMENT PRIMARY KEY,
   order_id INT,
@@ -47,7 +41,6 @@ CREATE TABLE order_details (
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- ITEM_TOPPINGS
 CREATE TABLE item_toppings (
   order_detail_id INT,
   topping_type_id INT,

@@ -5,7 +5,7 @@ services:
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: new_password
-      MYSQL_DATABASE: burritodb
+      MYSQL_DATABASE: burritodatabase
     ports:
       - "3307:3306"
     volumes:

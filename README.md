@@ -152,6 +152,7 @@ Just the catch blocks in try...catch are leftout.
 ### Sample Docker containers
 
 <img width="1461" alt="Screenshot 2024-02-02 at 6 23 10 AM" src="https://github.com/ar2653/burrito-shop/assets/144984108/b91bfb82-727a-4a6d-b8f5-9cdef3d048d0">
+[Running and can be tested]
 
 ### The Node JS App and MySQL Database are published to docker hub as well.
 
